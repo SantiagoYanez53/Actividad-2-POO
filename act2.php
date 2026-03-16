@@ -14,6 +14,25 @@ class Guitar {
         $this->marca = $marca;
         $this->price = $price;
     }
+
+    public function getDetails() {
+        return "[$this->marca] Modelo: {$this->model}, Precio: {$this->price}";
+    } 
+
+}
+
+class ElectricGuitar extends Guitar {
+    public $hasFloydRose;
+
+    public function __construct($model, $marca, $price, $hasFloydRose) {
+        parent:: __construct($model, $marca, $price);
+        $this->hasFloydRose = $hasFloydRose;
+    }
+
+    public function getDetails() {
+        $puente = $this->hasFloydRose ? "Con Floyd Rose" : "Puente Fijo";
+        return parent::getDetails() . " - Tipo: Electrica ($puente)";
+    }
 }
 
 class Inventory {
@@ -29,8 +48,7 @@ class Inventory {
 
         foreach ($this->lista as $guitar) {
         if (strtolower($guitar->marca) == strtolower($marcaBuscada)) {
-            echo " 
-            - " . $guitar->model . " (Precio: $" . $guitar->price . ")";
+            echo " - " . $guitar->getDetails();
             $encontrado = true;
         };
     }
@@ -43,13 +61,15 @@ class Inventory {
 
 $miInventario = new Inventory();
 
-$g1 = new Guitar("Player II Stratocaster", "Fender", 800);
-$g2 = new Guitar("Telecaster", "Fender", 750);
-$g3 = new Guitar("Les Paul", "Gibson", 2000);
+$g1 = new ElectricGuitar("Player II Stratocaster", "Fender", 800, false);
+$g2 = new ElectricGuitar("Telecaster", "Fender", 750,false);
+$g3 = new ElectricGuitar("Les Paul", "Gibson", 2000,false);
+$g4 = new ElectricGuitar("Flying V", "Jackson", 17800,true);
 
 $miInventario->add($g1);
 $miInventario->add($g2);
 $miInventario->add($g3);
+$miInventario->add($g4);
 
 
 $miInventario->showModel("Fender");
